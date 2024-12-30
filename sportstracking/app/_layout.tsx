@@ -4,8 +4,7 @@ import { Stack } from 'expo-router';
 export default function Layout() {
     return (
         <Stack>
-            <Stack.Screen name="index" options={{ headerShown: false }} />
-            <Stack.Screen name="(auth)/login" />
+            <Stack.Screen name="index" options={{ headerShown: false, title: 'Home' }} />
         </Stack>
     );
 }

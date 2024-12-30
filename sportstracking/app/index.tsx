@@ -1,14 +1,25 @@
 import React from 'react';
-import {View, Text, StatusBar, Image} from 'react-native';
+import {View, Text,Button} from 'react-native';
+import { Link } from 'expo-router';
 import { StyleSheet } from 'react-native';
 
 
 export default function Home() {
     return (
         <View style={styles.container}>
-            <Image style={styles.Image} source={require('@/assets/images/frontscreen.jpeg')} />
-            <Text>Welcome to SportsTracking V1.0 created by Evan Weidner</Text>
-            
+            <Text style={styles.Text} >SportsTracking V1.0</Text>
+            <Link href= {
+                {
+                    pathname: '/(auth)/login',
+                }
+            }> Login
+            </Link>
+            <Link href= {
+                {
+                    pathname: '/(auth)/register',
+                }
+            }> Register
+            </Link>
         </View>
     );
 }
@@ -20,10 +31,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
-    Image: {
-        flex: 1,
-        resizeMode: "center",
-        justifyContent: "center",
-        borderCurve: 150,
-    },
+    Text: {
+        fontSize: 25,
+        fontWeight: 'bold',
+    }
 });
