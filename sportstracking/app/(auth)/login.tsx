@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, Button} from "react-native";
-import { StyleSheet } from "react-native";
+import { View, Text, TextInput, Button, } from "react-native";
+import { StyleSheet, Pressable } from "react-native";
+import * as SecureStore from 'expo-secure-store';
 
 export default function Login() {
     const [email, setEmail] = useState('');
@@ -10,14 +11,16 @@ export default function Login() {
             <Text style={style.Text}>Welcome Back</Text>
             <TextInput style={style.loginBoxes}  autoCapitalize="none" autoCorrect={false} placeholder="Email" onChangeText={newText => setEmail(newText)} />
             <TextInput style={style.loginBoxes} autoCapitalize="none" autoCorrect={false} secureTextEntry placeholder="Password" onChangeText={newText => setPassword(newText)} />
-            <Button title="Login" onPress={() => sendLoginRequest(email, password)} />
+            <Pressable>
+                <Text onPress={() => sendLoginRequest(email, password)}>Login</Text>
+             </Pressable>
         </View>
     );
 }
 
 async function sendLoginRequest(email: string, password: string) {
     // Handle login logic here
-    await fetch('http://localhost:5001/auth/login', {
+    const resp = await fetch('http://localhost:5001/auth/login', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -27,6 +30,16 @@ async function sendLoginRequest(email: string, password: string) {
             password: password
         }),
     });
+
+    if (!resp.ok) {
+        throw new Error('Network response failed');
+    }
+    const data = await resp.json();
+
+    const { token, refresh_token  } = data;
+
+    SecureStore.setItemAsync('token', token);
+    SecureStore.setItemAsync('refresh_token', refresh_token);
 }
 
 const style = StyleSheet.create({
